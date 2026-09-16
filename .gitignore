@@ -1,0 +1,18 @@
+# Local-only / not for the public repo
+
+.pi/
+desktop.ini
+Thumbs.db
+
+# 腾祥爱情体简 — personal-use font, no redistribution grant (see fonts/tensentype-aiqingj/TERMS.txt)
+fonts/tensentype-aiqingj/
+fonts/LOCAL-PACK.md
+# local pack archives (contain the font above)
+fonts/dist/
+
+# PI-Desktop screenshots dropped into preview/ — may show private session content
+preview/*.png
+
+# Superseded builds and local install artifacts — only the current package is published
+pi.nebula-aura/dist/*installed.piplug
+pi.nebula-aura/dist/pi.nebula-aura-1.5.0.piplug

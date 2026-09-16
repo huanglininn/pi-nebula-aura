@@ -1,0 +1,10 @@
+# Keep the worktree LF so the committed sources stay byte-reproducible
+# (the packaged .piplug embeds them verbatim — see README).
+* text=auto eol=lf
+
+*.ttf  binary
+*.otf  binary
+*.woff2 binary
+*.piplug binary
+*.zip  binary
+*.png  binary

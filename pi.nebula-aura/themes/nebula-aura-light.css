@@ -1,0 +1,483 @@
+/* Nebula Aura Light for PI-Desktop — base: light
+ * Palette derived from Nebula Aura Theme (MIT) © luismpenholato,
+ * mapped onto the PI-Desktop host design tokens (--ds-*). Styling only. */
+
+:root[data-theme=light] {
+  /* Surfaces: editor / sideBar / activityBar / tabs from the source theme */
+  --ds-bg-primary: #F2F1F8;
+  --ds-bg-sidebar: #E2E0ED;
+  --ds-bg-secondary: #F7F6FC;
+  --ds-bg-tertiary: #EAE8F3;
+  --ds-bg-inset: #D8D5E6;
+  --ds-bg-under: #E8E6F2;
+  --ds-bg-elevated: rgba(252, 251, 255, 0.72);
+  --ds-bg-elevated-opaque: #FCFBFF;
+  --ds-bg-elevated-primary: rgba(252, 251, 255, 0.72);
+  --ds-bg-hover: rgba(46, 45, 58, 0.05);
+  --ds-bg-active: rgba(46, 45, 58, 0.09);
+  --ds-bg-composer: #FBFAFF;
+  --ds-bg-chip: rgba(46, 45, 58, 0.05);
+  --ds-bg-dock: #F7F6FC;
+  --ds-bg-dock-raised: #F2F1F8;
+
+  --ds-text-primary: #2E2D3A;
+  --ds-text-secondary: rgba(46, 45, 58, 0.72);
+  --ds-text-muted: #696381;
+  --ds-text-faint: #8E87A2;
+
+  --ds-border-default: rgba(107, 91, 212, 0.15);
+  --ds-border-subtle: rgba(107, 91, 212, 0.09);
+  --ds-border-strong: rgba(107, 91, 212, 0.26);
+
+  --ds-tile: rgba(46, 45, 58, 0.04);
+  --ds-tile-hover: rgba(46, 45, 58, 0.068);
+  --ds-tile-deep: rgba(46, 45, 58, 0.096);
+
+  --ds-raised: #FCFBFF;
+  --ds-raised-shadow: 0 1px 2px rgba(46, 45, 58, 0.039), 0 0 0 0.5px rgba(107, 91, 212, 0.09);
+
+  /* Primary buttons are `background: var(--ds-accent); color: var(--ds-bg-primary)`
+     in the host, so the accent keeps contrast against #F2F1F8. */
+  --ds-accent: #6B5BD4;
+  --ds-accent-hover: #5748B8;
+  --ds-accent-soft: #8C7FE0;
+
+  --ds-switch-track-off: rgba(46, 45, 58, 0.14);
+  --ds-switch-track-off-hover: rgba(46, 45, 58, 0.224);
+  --ds-switch-ring-off: rgba(46, 45, 58, 0.25);
+  --ds-switch-knob-off: #FCFBFF;
+  --ds-switch-knob-on: #FCFBFF;
+
+  --ds-success: #3D9A6E;
+  --ds-warning: #C07840;
+  --ds-error: #C04A5A;
+  --ds-info: #2289C2;
+  --ds-purple: #9B59B6;
+
+  --ds-shadow-dialog: 0 16px 48px rgba(46, 45, 58, 0.14);
+  --ds-shadow-composer: 0 3px 7.5px rgba(46, 45, 58, 0.017), 0 0 22px rgba(107, 91, 212, 0.1);
+  --ds-elevation-stroke: 0 0 0 0.5px rgba(107, 91, 212, 0.26);
+
+  /* UI font. The host applies Settings -> Font by writing --font-sans as an
+     INLINE style on <html>, and a normal rule can never beat an inline
+     declaration, so this is !important on purpose: while a Nebula theme is
+     selected it owns the UI font. Code blocks keep the host's own --font-mono. */
+  --font-sans: Maple Mono NF,腾祥爱情体简, Consolas, 'Courier New', monospace !important;
+
+  --ds-sidebar-glass-tint: var(--ds-bg-sidebar);
+  --ds-sidebar-glass-sheen-top: rgba(255, 255, 255, 0.5);
+  --ds-sidebar-glass-sheen-bottom: rgba(255, 255, 255, 0.34);
+}
+
+/* UI font is referenced, NOT bundled (v1.3.0): the host caps one theme's declared
+   assets at 4 MiB in total and a full CJK face is ~1.8 MB, so the fonts stay on the
+   user's machine. Install these two and --font-sans below resolves them by name —
+   verified in Chromium: "腾祥爱情体简" renders pixel-identically to its internal
+   family name "Tensentype AiQingJ", and "Maple Mono NF" is matched natively, so no
+   @font-face and no theme assets are needed at all:
+     Maple Mono NF   https://github.com/subframe7536/maple-font   (SIL OFL 1.1)
+     腾祥爱情体简      https://www.tensentype.com                    (free for personal use)
+   Without them the stack falls through to Consolas / Courier New / monospace. */
+
+
+/* Nebula backdrop: two soft aura glows plus a faint star field. */
+html[data-theme=light], html[data-theme=light] body, html[data-theme=light] #root {
+  background-color: var(--ds-bg-primary);
+  background-image:
+    radial-gradient(920px 620px at 10% -10%, rgba(107, 91, 212, 0.1), transparent 62%),
+    radial-gradient(760px 540px at 92% 108%, rgba(155, 89, 182, 0.09), transparent 64%),
+    radial-gradient(circle at 22px 28px, rgba(46, 45, 58, 0.055) 1px, transparent 1.6px),
+    radial-gradient(circle at 84px 96px, rgba(46, 45, 58, 0.035) 1px, transparent 1.6px);
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
+  background-size: auto, auto, 148px 148px, 148px 148px;
+  background-attachment: fixed;
+}
+
+/* User messages: translucent aura bubble (text keeps --ds-text-primary,
+   so code/chips/links inside stay legible on both bases). The :not() guard
+   leaves the host's inline-edit state (`.message-bubble:has(.message-edit)`)
+   transparent, and the scoped selector outranks the host bubble rule. */
+:root[data-theme=light] .message-row.user .message-bubble:not(:has(.message-edit)) {
+  background: rgba(107, 91, 212, 0.12) !important;
+  border: 1px solid rgba(107, 91, 212, 0.28);
+  color: var(--ds-text-primary);
+}
+:root[data-theme=light] .message-row.user .message-bubble:not(:has(.message-edit)) a {
+  color: var(--ds-accent);
+}
+:root[data-theme=light] .message-row.user .message-bubble:not(:has(.message-edit)) .prose-chat code {
+  background: rgba(107, 91, 212, 0.13) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+/* Assistant / system / tool: soft elevated card with an accent-tinted hairline */
+:root[data-theme=light] .message-row.assistant .message-bubble {
+  background: var(--ds-bg-elevated);
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(46, 45, 58, 0.039);
+  padding: 12px 16px;
+}
+:root[data-theme=light] .message-row.system .message-bubble,
+:root[data-theme=light] .message-row.tool .message-bubble {
+  background: rgba(46, 45, 58, 0.096);
+  border: 1px solid var(--ds-border-subtle);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+/* Monospace meta lines (model, tokens, cost, timestamps) */
+:root[data-theme=light] .message-meta,
+:root[data-theme=light] .message-meta-chip {
+  font-family: var(--font-mono, ui-monospace, Consolas, monospace);
+  font-size: 12px;
+  letter-spacing: 0.01em;
+}
+
+/* Composer: aura ring when focused */
+:root[data-theme=light] .composer-shell {
+  background: var(--ds-bg-composer);
+  border: 1px solid var(--ds-border-subtle);
+}
+:root[data-theme=light] .composer-shell:focus-within {
+  border-color: rgba(107, 91, 212, 0.28);
+  box-shadow: var(--ds-shadow-composer), 0 0 0 3px rgba(107, 91, 212, 0.16);
+}
+:root[data-theme=light] .composer-input {
+  color: var(--ds-text-primary);
+}
+
+/* Code: the host paints .code-block from its own --code-block-bg, so retarget
+   that variable instead of fighting the `pre { background: none !important }`
+   rule. Scoped selector + !important so it holds whatever the load order is. */
+:root[data-theme=light] .code-block {
+  --code-block-bg: #EAE8F3 !important;
+  color: #2E2D3A !important;
+  border: 1px solid var(--ds-border-subtle);
+}
+:root[data-theme=light] .prose-chat code {
+  background: rgba(107, 91, 212, 0.13) !important;
+  color: var(--ds-text-primary) !important;
+}
+
+/* Text selection uses the source theme's editor.selectionBackground. The
+   host sets ::selection from --ds-text-primary at equal specificity, so the
+   rule is scoped to the base and defended with !important. */
+:root[data-theme=light] ::selection {
+  background: #D4D0EA !important;
+  color: var(--ds-text-primary) !important;
+}
+
+/* P0 (backdrop reveal) deliberately NOT applied. Measured with the host sheet
+   linked + our sheet on top, on a real layout chain: .app-shell and .main-pane both
+   paint opaque `background: var(--ds-bg-primary)`, so the aura + star field above are
+   covered - and the reference theme parchment.css is covered exactly the same way
+   (first opaque ancestor above the probe point = .main-pane in both). Clearing those
+   layers would make this theme look different from every other PI-Desktop theme and
+   would put the star pattern behind chat text, so the root backdrop stays as the
+   host paints it. The README documents the one-rule opt-in for anyone who wants it.
+*/
+
+/* P1 · four COLOUR tokens the host reads with var() but never defines, so the
+   declarations using them were dropped at computed-value time:
+     --ds-text           .extension-prompt-message          (offset 247854)
+     --ds-text-tertiary  .transcript-history-loading        (85385)
+     --ds-danger         .mermaid-block-error / .plugins-version-withdrawn (176380/417854)
+     --ds-focus          :focus-visible outlines, .work-panel-resize:after  (91053/306579) */
+:root[data-theme=light] {
+  --ds-text: var(--ds-text-primary);
+  --ds-text-tertiary: var(--ds-text-faint);
+  --ds-danger: var(--ds-error);
+  --ds-focus: var(--ds-accent);
+}
+/* trap fixed: the host declares `.mermaid-block-error { color: var(--ds-danger);
+   background: var(--ds-danger) }` - now that --ds-danger exists that would be
+   same-colour text on same-colour band, i.e. invisible. Tint instead of fill. */
+:root[data-theme=light] .mermaid-block-error {
+  color: var(--ds-text-primary);
+  background: color-mix(in oklab, var(--ds-danger) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ds-danger) 45%, transparent);
+}
+
+/* P2 · host rules that hardcode neutral greys instead of using a token. Re-pointed
+   at this variant's own palette; color-mix keeps the alpha steps the host chose. */
+:root[data-theme=light] .empty-hero h1 {
+  color: var(--ds-text-primary);
+}
+:root[data-theme=light] .prose-chat h5,
+:root[data-theme=light] .prose-chat h6 {
+  color: color-mix(in oklab, var(--ds-text-primary) 62%, transparent);
+}
+:root[data-theme=light] .prose-chat li::marker {
+  color: color-mix(in oklab, var(--ds-text-primary) 40%, transparent);
+}
+:root[data-theme=light] .prose-chat blockquote {
+  color: color-mix(in oklab, var(--ds-text-primary) 72%, transparent);
+  border-left-color: color-mix(in oklab, var(--ds-accent) 45%, transparent);
+}
+:root[data-theme=light] .prose-chat a {
+  text-decoration-color: color-mix(in oklab, var(--ds-accent) 30%, transparent);
+}
+:root[data-theme=light] .prose-chat a:hover {
+  color: var(--ds-accent);
+  text-decoration-color: color-mix(in oklab, var(--ds-accent) 70%, transparent);
+}
+:root[data-theme=light] .prose-chat kbd {
+  color: var(--ds-text-primary);
+  background: var(--ds-tile);
+  border-color: var(--ds-border-subtle);
+}
+:root[data-theme=light] .prose-chat th {
+  color: var(--ds-text-primary);
+  background: var(--ds-tile-deep);
+}
+/* fenced code outside .code-block (the host paints those #383a42 on #fafafa) */
+:root[data-theme=light] .prose-chat pre {
+  color: var(--ds-text-primary);
+  background: var(--ds-bg-tertiary);
+}
+:root[data-theme=light] .code-block-head {
+  background: color-mix(in oklab, var(--ds-text-primary) 3.5%, transparent);
+}
+:root[data-theme=light] .code-block-lang,
+:root[data-theme=light] .code-block .code-copy-btn {
+  color: color-mix(in oklab, var(--ds-text-primary) 62%, transparent);
+}
+:root[data-theme=light] .code-block .code-copy-btn:hover {
+  color: var(--ds-text-primary);
+  background: color-mix(in oklab, var(--ds-text-primary) 6%, transparent);
+}
+:root[data-theme=light] .mermaid-block-body {
+  background: var(--ds-raised);
+}
+:root[data-theme=light] .prose-chat .mermaid-source {
+  color: var(--ds-text-primary);
+  background: var(--ds-bg-tertiary);
+}
+:root[data-theme=light] .thinking-prose {
+  color: color-mix(in oklab, var(--ds-text-primary) 58%, transparent);
+}
+:root[data-theme=light] .thinking-prose code {
+  color: color-mix(in oklab, var(--ds-text-primary) 68%, transparent);
+  background: var(--ds-tile);
+}
+:root[data-theme=light] .tool-row-content {
+  background: var(--ds-tile);
+}
+/* composer chrome: placeholder and toolbar ink were pinned to neutral grey */
+:root[data-theme=light] .composer-input::placeholder,
+:root[data-theme=light] .composer-placeholder {
+  color: var(--ds-text-muted);
+  -webkit-text-fill-color: var(--ds-text-muted);
+}
+/* host rule for the two below carries !important, so it takes one to answer;
+   the host selector is the same specificity and ours is injected later */
+:root[data-theme=light] .composer-toolbar .icon-btn,
+:root[data-theme=light] .mode-chip {
+  color: var(--ds-text-primary) !important;
+}
+/* settings page: #f4f4f4 / #000 nav, #fff / #212121 search, #e0e0e1 active,
+   #f3f3f3 plugin + capability search fields */
+:root[data-theme=light] .settings-shell-full .settings-nav {
+  background: var(--ds-bg-sidebar);
+  border-right: 1px solid var(--ds-border-subtle);
+}
+:root[data-theme=light] .settings-search {
+  background: var(--ds-bg-inset);
+  color: var(--ds-text-primary);
+  border: 1px solid var(--ds-border-subtle);
+}
+:root[data-theme=light] .settings-search:focus {
+  border-color: var(--ds-focus);
+}
+:root[data-theme=light] .settings-nav-item.active {
+  background: var(--ds-tile-hover);
+  color: var(--ds-text-primary);
+}
+:root[data-theme=light] .plugins-search,
+:root[data-theme=light] .agent-capability-search-wrap {
+  background: var(--ds-bg-inset);
+  border: 1px solid var(--ds-border-subtle);
+}
+:root[data-theme=light] .plugins-search:focus-visible,
+:root[data-theme=light] .agent-capability-search-wrap:focus-within {
+  background: var(--ds-bg-composer);
+  border-color: var(--ds-focus);
+}
+/* P3 · components inside the accent-tinted user bubble. The host paints chips,
+   command/image chips and attachments with neutral tiles (--ds-bg-chip /
+   --ds-tile-deep / --ds-tile-hover), which read as grey smears on an accent
+   background, and it colours links --ds-accent on hover, which vanishes against
+   the same accent. Re-tinted with this variant's own accent. (parchment.css does
+   the equivalent for its ink bubble, so this is parity, not invention.) */
+:root[data-theme=light] .message-row.user .message-bubble .chat-file-chip,
+:root[data-theme=light] .message-row.user .message-bubble .chat-command-chip,
+:root[data-theme=light] .message-row.user .message-bubble .chat-image-chip,
+:root[data-theme=light] .message-row.user .message-bubble .message-attachment {
+  background: color-mix(in oklab, var(--ds-accent) 18%, transparent);
+  color: var(--ds-text-primary);
+  border-color: color-mix(in oklab, var(--ds-accent) 34%, transparent);
+}
+:root[data-theme=light] .message-row.user .message-bubble .chat-file-chip:hover,
+:root[data-theme=light] .message-row.user .message-bubble .chat-file-chip:focus-visible,
+:root[data-theme=light] .message-row.user .message-bubble .chat-command-chip:hover,
+:root[data-theme=light] .message-row.user .message-bubble .chat-image-chip:hover,
+:root[data-theme=light] .message-row.user .message-bubble .message-attachment:hover,
+:root[data-theme=light] .message-row.user .message-bubble .message-attachment:focus-visible {
+  background: color-mix(in oklab, var(--ds-accent) 28%, transparent);
+  color: var(--ds-text-primary);
+}
+:root[data-theme=light] .message-row.user .message-bubble .chat-text-link,
+:root[data-theme=light] .message-row.user .message-bubble .chat-code-link,
+:root[data-theme=light] .message-row.user .message-bubble .chat-text-link:hover,
+:root[data-theme=light] .message-row.user .message-bubble .chat-text-link:focus-visible,
+:root[data-theme=light] .message-row.user .message-bubble .chat-code-link:hover,
+:root[data-theme=light] .message-row.user .message-bubble .chat-code-link:focus-visible {
+  color: var(--ds-text-primary);
+  text-decoration-color: color-mix(in oklab, var(--ds-text-primary) 55%, transparent);
+}
+:root[data-theme=light] .message-row.user .message-bubble .message-user-text {
+  color: var(--ds-text-primary);
+}
+/* File viewer (same document): markdown body + its code kept the host neutrals. */
+:root[data-theme=light] .file-viewer-body .file-viewer-markdown {
+  color: var(--ds-text-primary);
+}
+:root[data-theme=light] .file-viewer-body .file-viewer-markdown code,
+:root[data-theme=light] .file-viewer-body .file-viewer-markdown pre {
+  color: var(--ds-text-primary);
+  background: var(--ds-bg-tertiary);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   P4 · plugin views — the two panel plugins that own their palette and are reachable
+   from here: pi.gitlens (Git Lens 0.2.7, official, from the vastsa/pi-desktop-plugins
+   marketplace) and pi.file-manager (0.3.1, community, shipped BUILT INTO the host at
+   resources/plugins/ and also listed in that marketplace).
+   Their variables are short generic names, and
+   the host document has Tailwind utilities reading var(--fg) / var(--surface-hover),
+   so every rule below is gated on a DOM signature that exists in exactly one
+   document: .segmented -> pi.gitlens, .tree-size -> pi.file-manager.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* P4a · pi.gitlens (Git Lens 0.2.7) — its renderer applies the active plugin
+   theme (appearance-boot.js -> a style element with id pi-appearance-theme-css) and sets
+   data-theme, so these land in its document and map its 23 neutral tokens onto
+   this palette. Without this Git Lens is a grey Apple-style slab beside Nebula. */
+:root[data-theme=light]:has(.segmented) {
+  --bg: var(--ds-bg-dock);
+  --group: var(--ds-bg-elevated-opaque);
+  --inset: var(--ds-bg-inset);
+  --fg: var(--ds-text-primary);
+  --secondary: var(--ds-text-secondary);
+  --muted: var(--ds-text-muted);
+  --faint: var(--ds-text-faint);
+  --separator: var(--ds-border-subtle);
+  --hover: var(--ds-bg-hover);
+  --track: color-mix(in oklab, var(--ds-text-primary) 8%, transparent);
+  --thumb: color-mix(in oklab, var(--ds-text-primary) 26%, transparent);
+  --thumb-shadow: 0 0 0 0.5px var(--ds-border-subtle);
+  --accent: var(--ds-accent);
+  --on-accent: var(--ds-bg-primary);
+  --success: var(--ds-success);
+  --warning: var(--ds-warning);
+  --error: var(--ds-error);
+}
+/* Git Lens drives every surface through these tokens (verified in its panel.css:
+   .chrome uses var(--bg), .segmented var(--track), .group var(--group),
+   .patch .add/.del color-mix(var(--success)/var(--error) 12%), .button.primary
+   var(--accent) + var(--on-accent), .banner color-mix(var(--error) 12%, var(--group))),
+   and its only literal outside those blocks is a base-neutral black toast shadow, so the
+   mapping above is the whole colour adaptation and no component rule is needed (radius /
+   motion / font tokens stay the plugin's own - not colour). */
+/* P4b · pi.file-manager (0.3.1 — shipped BUILT INTO the host at
+   resources/plugins/pi.file-manager, and also listed in the marketplace) — it reads
+   app.getAppearance but ignores the pluginTheme payload, so our sheet is not applied
+   inside it today, and it sets data-base (not data-theme); hence literal values from
+   THIS variant's palette, scoped to its unique .tree-size. Dormant-but-ready: it
+   activates as soon as the plugin applies pluginTheme (the README carries the
+   patch), and it can never affect the host document.
+   [data-base] is load-bearing, not decoration: the plugin declares its own palette in
+   `:root[data-base=light]` (0,2,0), which TIES with `:root:has(.tree-size)` (0,2,0) —
+   and its bundle appends its own <style> at init, so a sheet injected before that
+   loses the ENTIRE light mapping on document order. (0,3,0) wins in both orders; the
+   ungated selector stays for the frame before data-base exists, where the only
+   competitor is the plugin's own `:root` block (0,1,0). */
+:root[data-base]:has(.tree-size),
+:root:has(.tree-size) {
+  --bg: #F7F6FC;
+  --surface: #F7F6FC;
+  --surface-raised: #FCFBFF;
+  --surface-hover: rgba(46, 45, 58, 0.05);
+  --surface-active: rgba(46, 45, 58, 0.09);
+  --fg: #2E2D3A;
+  --secondary: rgba(46, 45, 58, 0.72);
+  --muted: #696381;
+  --faint: #8E87A2;
+  --border: rgba(107, 91, 212, 0.09);
+  --border-strong: rgba(107, 91, 212, 0.15);
+  --accent: #6B5BD4;
+  --danger: #C04A5A;
+  --icon-folder: #C07840;
+  --icon-doc: #696381;
+  /* JSON viewer syntax hues — the plugin hardcodes Atom One's #e45649 / #50a14f /
+     #986801 / #a626a4, so nothing above reaches its four token colours. Same H and S
+     as this variant's --ds-error / --ds-success / --ds-warning / --ds-purple (key red,
+     string green, number amber, literal violet), lightness reduced until each clears
+     4.8:1 on --bg #F7F6FC — measured, the raw tokens land at 4.47 / 3.23 / 3.26 /
+     4.34:1, under the 4.5:1 bar for 11.5 px code text. null already uses var(--muted). */
+  --json-key: #BD4253;
+  --json-string: #307A57;
+  --json-number: #995F32;
+  --json-literal: #954FB2;
+}
+/* Two component literals survive in the plugin's own stylesheet — the JSON viewer's
+   "expand" row `.json-more` and the markdown preview's `.md-link`, both hardcoded
+   #4aa3d9 — and no custom property reaches either. Same document gate as P4b. (Its JS
+   icon map and the CodeMirror .cm-searchMatch highlight keep their own colours: out of
+   CSS reach.) */
+:root:has(.tree-size) .json-more,
+:root:has(.tree-size) .md-link {
+  color: var(--accent);
+}
+/* P4c · do not leak the host backdrop or host-only components into a plugin
+   document that applies this sheet: Git Lens has the html element data-theme and its own
+   surfaces, so the root aura/star field and the chat rules must stay out. */
+:root:has(.segmented),
+:root:has(.tree-size),
+:root:has(.segmented) body,
+:root:has(.tree-size) body,
+:root:has(.segmented) #root,
+:root:has(.tree-size) #root {
+  background-image: none;
+  background-attachment: scroll;
+}
+
+/* The backdrop rule above also set background-color (--ds-bg-primary), which at (0,1,2)
+   outranks the plugin's own `body { background: var(--bg) }` (0,0,1) and left a band of
+   host page colour behind every plugin surface. Cancel it as well - gated on the plugin's
+   own data-* attribute, so a document without one keeps its own body colour instead of an
+   unresolved var(). */
+:root[data-theme=light]:has(.segmented),
+:root[data-theme=light]:has(.segmented) body,
+:root[data-theme=light]:has(.segmented) #root,
+:root[data-base]:has(.tree-size),
+:root[data-base]:has(.tree-size) body,
+:root[data-base]:has(.tree-size) #root {
+  background-color: var(--bg);
+}
+
+/* P4d · the host's panel chrome (created by the plugin-panel preload, fixed over the
+   plugin document; it carries the window-control capsule and paints the page colour behind
+   a plugin view) sets its page colours from the STOCK light / dark surface via inline
+   custom properties. Author !important outranks an inline declaration, so the capsule and
+   the page behind the view follow this palette instead of stock white / #181818. */
+pi-plugin-panel-chrome {
+  /* The literal fallbacks are this variant's --ds-bg-dock / --ds-text-primary: in a
+     document that applies this sheet without a data-theme (a plugin that sets only
+     data-base), var(--ds-*) is undefined and an unresolved var() would drop the preload's
+     inline colours instead of leaving them alone. */
+  --pi-plugin-panel-page-background: var(--ds-bg-dock, #F7F6FC) !important;
+  --pi-plugin-panel-page-foreground: var(--ds-text-primary, #2E2D3A) !important;
+}

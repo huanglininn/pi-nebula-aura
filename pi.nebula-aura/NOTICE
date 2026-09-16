@@ -1,0 +1,54 @@
+# Nebula Aura Theme for PI-Desktop — third-party notice
+
+This plugin is a **PI-Desktop port**. The colour values (surface, text, accent,
+semantic and selection colours) are derived from:
+
+> **Nebula Aura Theme** — a modern light, dark, violet and midnight theme pack
+> for VS Code, Cursor and Antigravity.
+> Copyright (c) Luis Penholato
+> https://github.com/luismpenholato/nebula-aura-theme
+> Licensed under the MIT License.
+
+No source file, artwork or VS Code theme JSON from that repository is
+redistributed here. The port re-targets the palette onto PI-Desktop's own
+`--ds-*` design tokens and writes new CSS; a small number of colours were
+adjusted away from the source values so that text keeps WCAG-legible contrast
+against each base background (see README for which).
+
+## Fonts - referenced, never shipped
+
+This package contains **no font files**. The `--font-sans` stack names two
+families that the user installs on their own machine:
+
+  * **Maple Mono NF** — subframe7536, https://github.com/subframe7536/maple-font,
+    Copyright 2022 The Maple Mono Project Authors, **SIL Open Font License 1.1**
+    (`OS/2.fsType = 0x0000`, Installable). Take the `Maple Mono NF` release asset.
+  * **腾祥爱情体简** — 腾祥字型, https://www.tensentype.com, free for personal use.
+    Its installed family name is `Tensentype AiQingJ` and its `OS/2.fsType` is
+    `0x0008` (Editable embedding). Windows resolves the Chinese name too, so no
+    `@font-face` alias is needed (verified: pixel-identical canvas renders for
+    both spellings, and both differ from the monospace fallback).
+
+Releases 1.1.0 and 1.2.0 bundled woff2 copies instead. 1.2.0 pushed one theme's
+declared assets past the host's 4 MiB **total** cap, which made the host drop
+every asset and reject each `url()`, so the theme rendered with a fallback font;
+and bundling 腾祥爱情体简 at all rested on a personal-use judgement rather than on
+a redistribution grant inside the file (it embeds no licence text — nameID 13/14
+absent). Release 1.3.0 ships nothing, so neither question is open any more: the
+only third-party content left in this package is the colour palette credited
+above, and each user's own font install is governed by that font's licence.
+
+## Adapted plugins (referenced, not redistributed)
+
+Release 1.5.0 adds colour mappings for two plugins from the official marketplace
+repository [`vastsa/pi-desktop-plugins`](https://github.com/vastsa/pi-desktop-plugins)
+(MIT, Copyright (c) 2026 vastsa): `pi.gitlens` 0.2.7 and `pi.file-manager` 0.3.1.
+Nothing from those plugins is copied here — no JS, no CSS, no manifest, no asset. The
+theme only writes their *public* CSS custom-property names (`--bg`, `--fg`,
+`--surface-raised`, `--accent`, ...) and the class names they render with
+(`.segmented`, `.tree-size`), which is interface-level knowledge needed to interoperate,
+the same way the host's `--ds-*` tokens are used. Any plugin that does not consume the
+`pluginTheme` payload the host offers simply keeps its own colours (see README).
+
+MIT License text: https://opensource.org/licenses/MIT
+SIL OFL 1.1 text: https://openfontlicense.org
