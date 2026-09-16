@@ -10,8 +10,7 @@ fonts/LOCAL-PACK.md
 # local pack archives (contain the font above)
 fonts/dist/
 
-# PI-Desktop screenshots dropped into preview/ — may show private session content
-preview/*.png
+# preview/*.png ARE published — the author's own captures of PI-Desktop, reviewed (no session content)
 
 # Superseded builds and local install artifacts — only the current package is published
 pi.nebula-aura/dist/*installed.piplug

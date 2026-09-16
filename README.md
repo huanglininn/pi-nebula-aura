@@ -5,9 +5,17 @@ Four **Nebula Aura** colour themes — **Light · Dark · Violet · Midnight** �
 [nebula-aura-theme](https://github.com/luismpenholato/nebula-aura-theme) onto PI-Desktop's own
 `--ds-*` design tokens. Styling only: no features, no network, no file or clipboard access.
 
+Its plugin **shape** follows **[pi.parchment](https://github.com/vastsa/pi-desktop-plugins/tree/main/plugins/pi.parchment)**
+(Parchment Theme 1.0.4, © pkmcenter, MIT) — a `ui.theme`-only global theme written as plain CSS over the
+host's `--ds-*` tokens. This pack keeps that shape, swaps in a different palette and extends it to four
+variants and the two adapted plugin panels.
+
 为 [PI-Desktop](https://github.com/vastsa/PI-Desktop) 做的四套 **Nebula Aura** 配色，把 VS Code 主题包
 [nebula-aura-theme](https://github.com/luismpenholato/nebula-aura-theme) 的调色板移植到 PI-Desktop 的设计令牌
 （`--ds-*`）上。纯样式：无额外功能、无网络、无文件/剪贴板访问。
+
+插件形态参考 **[pi.parchment](https://github.com/vastsa/pi-desktop-plugins/tree/main/plugins/pi.parchment)**（Parchment 主题
+1.0.4，作者 pkmcenter，MIT）：只申请 `ui.theme`、纯 CSS 覆盖宿主 `--ds-*` 令牌。本主题沿用这一形态，换成 Nebula 调色板并扩展到四套配色。
 
 | | |
 |---|---|
@@ -15,7 +23,7 @@ Four **Nebula Aura** colour themes — **Light · Dark · Violet · Midnight** �
 | Permission | `ui.theme` — contributes four global themes, CSS only |
 | Requires | PI-Desktop `>= 0.4.3` |
 | Package | [`pi.nebula-aura/dist/pi.nebula-aura-1.6.0.piplug`](pi.nebula-aura/dist) |
-| Licence | MIT for the theme; palette © Luis Penholato (MIT); bundled font under **SIL OFL 1.1** — see [NOTICE](pi.nebula-aura/NOTICE) |
+| Licence | MIT for the theme; palette © Luis Penholato (MIT); plugin shape after pi.parchment © pkmcenter (MIT); bundled font under **SIL OFL 1.1** — see [NOTICE](pi.nebula-aura/NOTICE) |
 
 ## Install / 安装
 
@@ -45,6 +53,26 @@ Four **Nebula Aura** colour themes — **Light · Dark · Violet · Midnight** �
 | Nebula Aura Violet | dark | violet/magenta aura + star field | `#A78BFA` |
 | Nebula Aura Midnight | dark | cyan/blue aura + star field | `#7C8CFF` |
 
+## Screenshots / 效果预览
+
+Captures of PI-Desktop running these themes — the author's own screenshots of the app, committed here
+as previews. Midnight has no capture yet; the offline page below covers all four variants.
+
+![Nebula Aura Light](preview/nebula-aura-light-1.png)
+*Nebula Aura Light*
+
+![Nebula Aura Light](preview/nebula-aura-light-2.png)
+*Nebula Aura Light*
+
+![Nebula Aura Dark](preview/nebula-aura-dark-1.png)
+*Nebula Aura Dark*
+
+![Nebula Aura Dark](preview/nebula-aura-dark-2.png)
+*Nebula Aura Dark*
+
+![Nebula Aura Violet](preview/nebula-aura-violet-1.png)
+*Nebula Aura Violet*
+
 Offline mock-up page — all four variants in one HTML file, no network, no webfont:
 [`preview/index.html`](preview/index.html).
 
@@ -67,7 +95,7 @@ Offline mock-up page — all four variants in one HTML file, no network, no webf
 ```text
 pi.nebula-aura/     the plugin — manifest.json, main.js, themes/*.css, README, NOTICE, dist/*.piplug
 fonts/              Maple Mono NF (OFL) + install notes; 腾祥爱情体简 deliberately not included
-preview/            offline mock-ups, one HTML page per variant
+preview/            screenshots of the themes in PI-Desktop + an offline mock-up page (index.html)
 ```
 
 ## Credits / 致谢
@@ -76,6 +104,13 @@ preview/            offline mock-ups, one HTML page per variant
   Penholato, MIT. This is an unofficial PI-Desktop port; no VS Code sources are redistributed
   (the port re-targets the palette onto PI-Desktop's tokens and writes new CSS) — see
   [NOTICE](pi.nebula-aura/NOTICE).
+* **Plugin shape / prior art** — [pi.parchment](https://github.com/vastsa/pi-desktop-plugins/tree/main/plugins/pi.parchment)
+  (Parchment Theme 1.0.4) © pkmcenter, MIT, from the same marketplace repository: the pattern this
+  plugin follows — a `ui.theme`-only global theme written as plain CSS over the host's `--ds-*`
+  tokens, scoped with `:root[data-theme=…]`, plus the panel / README / safety-notes conventions that go
+  with it. No file from pi.parchment is redistributed: the CSS here is this project's own, re-targeting
+  a different palette and extending the shape to four variants, the host's hardcoded neutrals and the
+  two adapted plugin panels.
 * **Fonts** — [Maple Mono](https://github.com/subframe7536/maple-font) © The Maple Mono Project
   Authors (subframe7536), SIL OFL 1.1.
 * **Plugin interop** — the two adapted panels belong to

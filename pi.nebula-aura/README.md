@@ -169,6 +169,7 @@ themes/nebula-aura-midnight.css  base: dark
 index.html                       dev-only page (not the plugin panel)
 NOTICE                           attribution: palette (MIT) + font licence notes
 ../preview/index.html            offline mock-up page of the four variants (repo, not packaged)
+../preview/*.png                 screenshots of the themes in PI-Desktop (repo, not packaged)
 ../fonts/maple-mono-nf/          the redistributable font pack + install notes (repo, not packaged)
 ```
 
@@ -398,4 +399,8 @@ CSS 由宿主在加载时净化（字节上限、禁止 `@import`/标记/脚本/
 
 Colour values come from **Nebula Aura Theme** © Luis Penholato, MIT licensed (<https://github.com/luismpenholato/nebula-aura-theme>). This is an unofficial port to PI-Desktop, not a VS Code extension. See [NOTICE](NOTICE).
 
+The plugin **shape** follows **pi.parchment** (Parchment Theme 1.0.4) © pkmcenter, MIT licensed, from the same marketplace repository (<https://github.com/vastsa/pi-desktop-plugins/tree/main/plugins/pi.parchment>) — a `ui.theme`-only global theme written as plain CSS over the host's `--ds-*` tokens. No file from pi.parchment is copied; the CSS here is this project's own and extends the shape to four variants, the host's hardcoded neutrals and the two adapted plugin panels. See [NOTICE](NOTICE).
+
 配色取自 **Nebula Aura Theme**（© Luis Penholato，MIT 许可），本仓库是非官方的 PI-Desktop 移植版。
+插件形态（只申请 `ui.theme` 的纯 CSS 全局主题、覆盖宿主 `--ds-*` 令牌的写法）参考 **pi.parchment**
+（Parchment 主题 1.0.4，© pkmcenter，MIT）；未复制其任何文件，详见 [NOTICE](NOTICE)。

@@ -38,6 +38,26 @@ absent). Release 1.3.0 ships nothing, so neither question is open any more: the
 only third-party content left in this package is the colour palette credited
 above, and each user's own font install is governed by that font's licence.
 
+## Plugin shape / prior art (referenced, not redistributed)
+
+The shape of this plugin follows **pi.parchment — Parchment Theme 1.0.4** by **pkmcenter**, from
+the same marketplace repository
+[`vastsa/pi-desktop-plugins`](https://github.com/vastsa/pi-desktop-plugins)
+(<https://github.com/vastsa/pi-desktop-plugins/tree/main/plugins/pi.parchment>), MIT licensed
+(Copyright (c) 2026 vastsa, per that repository's LICENSE):
+
+  * a global theme that asks only for `ui.theme` and is written as plain CSS,
+  * built on the host's `--ds-*` design tokens and scoped with `:root[data-theme=...]`,
+  * with the small panel, the bilingual README and the "styling only, no features" safety notes
+    that go with that shape.
+
+No stylesheet, colour value or asset from pi.parchment is copied here: the CSS in this package is
+written for a different palette and extends the shape to four variants, to the hardcoded neutrals
+the host stylesheet leaves behind, and to the two adapted plugin panels (see below).
+
+The screenshots committed under `preview/` are the author's own captures of PI-Desktop running
+these themes; they contain no third-party material.
+
 ## Adapted plugins (referenced, not redistributed)
 
 Release 1.5.0 adds colour mappings for two plugins from the official marketplace
