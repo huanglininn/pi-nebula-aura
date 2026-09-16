@@ -199,8 +199,9 @@ that theme and each `url()` then fails as `INVALID_CSS`, so the theme still load
 fallback font. 1.2.0 shipped 5.25 MiB of woff2 and hit exactly that — `~/.pi-desktop/logs/app/plugin.log`
 recorded `5 declared asset(s) ignored` plus four × `theme css may only reference data: urls or
 declared assets`. A full CJK face alone is ~1.8 MiB, so bundling both fonts without cutting
-coverage was impossible; referencing the installed copies is the clean answer and the package is
-back to ~40 KB.
+coverage was impossible; referencing the installed copies is the clean answer — the plugin declares no
+assets at all and stays text-only: 1.6.0 is 139,518 B, of which 91,530 B is the four commented
+stylesheets.
 
 **No `@font-face` is needed** — the platform font list matches both names as written. Verified in
 Chromium (canvas render of the same string at 40 px):
@@ -224,7 +225,7 @@ the system CJK fallback.
 **中文：** 主题只设 `--font-sans`，**不打包字体文件**。宿主限制的是单个主题声明资源的**总字节**（4 MiB），
 不是单文件；1.2.0 打了 5.25 MiB woff2 正好超线，于是字体被整批丢弃、`url()` 全部失效、界面回退到系统字体
 （日志里就是那两条 `INVALID_ASSET` / `INVALID_CSS`）。一个中文字体本身就 ~1.8 MiB，想在保住完整覆盖的同时塞进
-预算是不可能的，所以改成引用本机安装的字体，包体回到 ~40 KB。两个字体的家族名都能被系统字体列表直接命中
+预算是不可能的，所以改成引用本机安装的字体 —— 插件不声明任何资源、整包只剩文本：1.6.0 为 139,518 B，其中四套带注释的样式表合计 91,530 B。两个字体的家族名都能被系统字体列表直接命中
 （实测见上表，`腾祥爱情体简` 与其内部名 `Tensentype AiQingJ` 渲染像素完全一致），因此连 `@font-face` 都不需要；
 没装字体就自动回退，不影响其它配色效果。
 ## Plugin adaptation (1.6.0) / 插件适配
